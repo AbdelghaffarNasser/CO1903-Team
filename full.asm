@@ -127,6 +127,8 @@ print: #Prints whatever is stored inside theString
 done:
     jr $ra  #continue the excution after calling the function 
 exit:
+    li $v0,10
+    syscall
             
 Selection_Sort:		
 		li	$v0, 4			#Tell the system to print a string
