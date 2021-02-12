@@ -4,6 +4,8 @@ prompt: .asciiz  "\nEnter your characters/integers: \n"  # Prompt asking for use
 newLine: .asciiz "\n"                               # Newline character
 theString: .asciiz " "                              # A fifty character string initially filled with whitespace
 msc2: .asciiz "\n enter the number of characters/integers \n"
+
+
 choice:		.asciiz "\nPlease select your choice: \n 1-Sort Integers\t2-Sort Characters\n"
 size:		.asciiz "\nInsert the size of the array: "
 buffer:	.byte 100			#Reserve 100 byte in the meomery for 100 charachters
@@ -11,6 +13,8 @@ elementsI:	.asciiz "Insert the array elements,one per line  \n"
 elementsC:	.asciiz "\nInsert the array elements: "
 sorted:	.asciiz "After the array is sorted:   "
 c:		.asciiz ", "
+
+
 input_size: .asciiz "\nPlease insert the size of your elements : "
 input_numbers: .asciiz "\nEnter the array elements : \n"
 arr: .word 0 #array declaration
@@ -18,6 +22,12 @@ Sorted_Array:	.asciiz		"Sorted Array: ["
 Space:		.asciiz		", "
 Bracket:	.asciiz		"]"
 h: 	.word 0:100 #int h[100] is global
+
+
+
+num_search: .asciiz "\nEnter the Element to be searched: "
+found: .asciiz "\nThe Element is present in the Array at Position: "
+not_found: .asciiz "\nElement not found in the Array."
 d:		.byte '.'
 n:		.byte '\n'
 .text
@@ -26,7 +36,7 @@ main:
     la $a0, msc     # Load address of prompt from memory into $a0
     li $v0, 4         # Load Opcode: 4 (print string) 
     syscall           # Init syscall
-    
+   
     
     li $v0, 5			# read the array number from the user
     syscall
@@ -134,8 +144,8 @@ print: #Prints whatever is stored inside theString
 done:
     jr $ra  #continue the excution after calling the function 
 exit:
-    li $v0,10
-    syscall
+     li $v0,10
+     syscall
             
 Selection_Sort:		
 		li	$v0, 4			#Tell the system to print a string
@@ -389,8 +399,6 @@ swapC:
 
 		
 				
-						
-										
 mergeFunction:	
 
 	li $v0, 4		
@@ -432,6 +440,7 @@ exit_input:
 	#la  $a0, Bracket	# Prints the closing bracket for the array
 	#li  $v0, 4		# MIPS call for printing prompts
 	#syscall
+	jal Exit_input
 	li  $v0, 10		# Done!
 	syscall
 	
@@ -439,7 +448,7 @@ Mergesort:
 	slt $t0, $a1, $a2 	# if low < high then $t0 = 1 else $t0 = 0  
 	beq $t0, $zero, Return	# if $t0 = 0, go to Return
 	
-	# void merge(char arr[], int left, int middle, int right) in C
+	#lookHere :D
 	addi, $sp, $sp, -16 	# Make space on stack for 4 items
 	sw, $ra, 12($sp)	# save return address
 	sw, $a1, 8($sp)	       	# save value of low in $a1
@@ -491,10 +500,10 @@ If:     #Assign array values to registers
 	lw   $t3, 0($t2)	# load the value of a[j] into $t3	
 	#Start of if-else statment
 	blt  $t3, $t1, Else	# if a[j] < a[i], go to Else
-	la   $t4, h		# Get start address of h
+	la   $t4, c		# Get start address of c
 	sll  $t5, $s1, 2	# k*4
-	add  $t4, $t4, $t5	# $t4 = h[k]; $t4 is address of h[k]
-	sw   $t1, 0($t4)	# h[k] = a[i]
+	add  $t4, $t4, $t5	# $t4 = c[k]; $t4 is address of c[k]
+	sw   $t1, 0($t4)	# c[k] = a[i]
 	addi $s1, $s1, 1	# k++
 	addi $s0, $s0, 1	# i++
 	j    While1		# Go to next iteration
@@ -503,10 +512,10 @@ Else:
 	sll  $t2, $s2, 2	# $t1 = j*4
 	add  $t2, $t2, $a0	# add offset to the address of a[0]; now $t2 = address of a[j]
 	lw   $t3, 0($t2)	# $t3 = whatever is in a[j]	
-	la   $t4, h		# Get start address of h
+	la   $t4, c		# Get start address of c
 	sll  $t5, $s1, 2	# k*4
-	add  $t4, $t4, $t5	# $t4 = h[k]; $t4 is address of h[k]
-	sw   $t3, 0($t4)	# h[k] = a[j]
+	add  $t4, $t4, $t5	# $t4 = c[k]; $t4 is address of c[k]
+	sw   $t3, 0($t4)	# c[k] = a[j]
 	addi $s1, $s1, 1	# k++
 	addi $s2, $s2, 1	# j++
 	j    While1		# Go to next iteration
@@ -516,10 +525,10 @@ While2:
 	sll $t0, $s0, 2		# # $t6 = i*4
 	add $t0, $a0, $t0	# add offset to the address of a[0]; now $t6 = address of a[i]
 	lw $t1, 0($t0)		# load value of a[i] into $t7
-	la  $t2, h		# Get start address of h
+	la  $t2, c		# Get start address of c
 	sll $t3, $s1, 2         # k*4
-	add $t3, $t3, $t2	# $t5 = h[k]; $t4 is address of h[k]
-	sw $t1, 0($t3) 		# saving $t7 (value of a[i]) into address of $t5, which is h[k]
+	add $t3, $t3, $t2	# $t5 = c[k]; $t4 is address of c[k]
+	sw $t1, 0($t3) 		# saving $t7 (value of a[i]) into address of $t5, which is c[k]
 	addi $s1, $s1, 1   	# k++
 	addi $s0, $s0, 1   	# i++
 	j While2		# Go to next iteration
@@ -531,10 +540,10 @@ While3:
 	add $t2, $t2, $a0  	# add offset to the address of a[0]; now $t6 = address of a[j]
 	lw $t3, 0($t2)     	# $t7 = value in a[j]
 	
-	la  $t4, h		# Get start address of h
+	la  $t4, c		# Get start address of c
 	sll $t5, $s1, 2	   	# k*4
-	add $t4, $t4, $t5  	# $t5 = h[k]; $t4 is address of h[k]
-	sw $t3, 0($t4)     	# $t4 = h[k]; $t4 is address of h[k]
+	add $t4, $t4, $t5  	# $t5 = c[k]; $t4 is address of c[k]
+	sw $t3, 0($t4)     	# $t4 = c[k]; $t4 is address of c[k]
 	addi $s1, $s1, 1   	# k++
 	addi $s2, $s2, 1   	# j++
 	j While3		# Go to next iteration
@@ -542,16 +551,16 @@ While3:
 For_Initializer:
 	add  $t0, $a1, $zero	# initialize $t0 to low for For loop
 	addi $t1, $a2, 1 	# initialize $t1 to high+1 for For loop
-	la   $t4, h		# load the address of array h into $t4	
+	la   $t4, c		# load the address of array c into $t4	
 	j    For
 For:
 	slt $t7, $t0, $t1  	# $t7 = 1 if $t0 < $t1
 	beq $t7, $zero, sortEnd	# if $t7 = 0, go to sortEnd
 	sll $t2, $t0, 2   	# $t0 * 4 to get the offset
 	add $t3, $t2, $a0	# add the offset to the address of a => a[$t3]
-	add $t5, $t2, $t4	# add the offset to the address of h => h[$t5]
-	lw  $t6, 0($t5)		# loads value of h[i] into $t6
-	sw $t6, 0($t3)   	# save the value at h[$t0] to a[$t0]; a[i] = h[i]
+	add $t5, $t2, $t4	# add the offset to the address of c => c[$t5]
+	lw  $t6, 0($t5)		# loads value of c[i] into $t6
+	sw $t6, 0($t3)   	# save the value at c[$t0] to a[$t0]; a[i] = c[i]
 	addi $t0, $t0, 1 	# increment $t0 by 1 for the i++ part of For loop
 	j For 			# Go to next iteration
 
@@ -575,6 +584,87 @@ Print_Loop:
 	#li   $v0, 4		# MIPS call to print a prompt
 	#syscall
 	j    Print_Loop		# Go to next iteration of the loop
+Exit_input:
+	#input for searching elements.. $a3=number to be searched
+	li $v0, 4
+	la $a0, num_search		# print (enter the value to be search)
+	syscall
+	
+	li $v0, 5			# read the value (search) from the user 
+	syscall 
+	
+	# Our inputs
+	addi $a3, $v0, 0		# a3 = number to be searched
+	la $a0, arr			# a0 = array
+	addi $a1, $zero, 0		# a1 = First 
+	addi $a2, $t0, -1		# a2 = Last
+	
+	jal binary_search		#function call
+	#back to the main from funtion
+	addi $t7, $zero, -1		 # t7 = -1
+	beq $v1, $t7, nott		# if v1 == t7 call the function nott
+	li $v0, 4			
+	la $a0, found			# print that the element that be searched is in the array 
+	syscall
+	li $v0, 1
+	addi $a0, $v1, 0		# print the position of the element 
+	syscall
+	li $v0, 10
+	syscall
+
+nott:
+	li $v0, 4
+	la $a0, not_found
+	syscall
+	li $v0, 10
+	syscall
+
+binary_search:
+	
+	la $a0, arr			# a0 = array
+	addi $s2, $zero, 0		# s2 = 0 = middle
+	slt $t1, $a2, $a1		# t1 = 1 if ( a2 < a1 )    while (first < last) 
+	beq $t1, $zero, if1		# if ( t1 == 0 ) call function (if1)
+	addi $v1, $zero, -1		# v1 += -1  
+	jr $ra
+	
+if1:
+	add $s2, $a2, $a1		# s2 = a2 + a1 ( middle = last + first )  
+	
+	addi $t9, $zero, 2		# t9=2 so that i could divide mid with by 2
+	div $s2, $t9			# s2 / 2  ( div the middle on 2 )
+	mflo $s2 			# move from LOW to s2
+	mflo $s3			# move from LOW to s3
+	mul $s3, $s3, 4 		# s3 = 4 * s3
+	add $a0, $a0, $s3		# array (a0) = a0 +s3
+	lw $s4, 0($a0)			# s4 = the first elemnt in array
+	bne $s4, $a3, if2		# if array(i) in not equal the searched number then call if2
+	addi $v1, $s2, 1		# vi = s2 + 1
+	jr $ra
+	 
+if2:
+	slt $t5, $a3, $s4		# t5 = 1 if ( a3 < s4 )
+	beq $t5, $zero, else		# if ( t5 = 0 ) call function else 
+	addi $a2, $s2, -1		# a2 = s2 -1
+	addi $sp, $sp, -4		# sp = sp - 4
+ 	sw $ra, 0($sp)			
+	jal binary_search
+
+	j exit1				# jump to function exit 
+	
+else:
+	addi $a1, $s2, 1		# a1 = s2 +1 
+	addi $sp, $sp, -4		# sp = sp - 4
+	sw $ra, 0($sp)		
+	jal binary_search
+	j exit1				# jump to function exit 
+	
+exit1:
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
+	jr $ra
+
 	
 Exit:
-	jr $ra			# jump to the address in $ra; Go back to main
+	jr $ra			# jump to the address in $ra; Go back to main						
+										
