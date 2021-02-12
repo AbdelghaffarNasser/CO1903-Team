@@ -208,22 +208,20 @@ int main()
         printf("\nDone :D ");
     }else if(num == 3){
         printf("Please insert the size of your elements then insert the elements: \n");
-        char arr[5000] = {0};
         int size;
         scanf("%d", &size);
-        printf("Hey there, Enter your elements: \n");
-        for(int i = 0; i <= size; i++){
-            scanf("%c", &arr[i]);
+        char arr[size];
+
+        printf("Enter your characters\integers: \n");
+        for(int i = 0; i < size; i++){
+            scanf("%s", arr+i);
         }
-        /*printf("Original array: ");
-        for(int j = 0; j <= size; j++){
-            printf("%c", arr[j+1]);
-        }*/
+
         printf("\nSorted array: ");
 
         bubblesort(arr, size);
 
-        for(int k = 0; k <= size; k++){
+        for(int k = 0; k < size; k++){
             printf("%c", arr[k+1]);
         }
 
@@ -234,7 +232,5 @@ int main()
         printf("\nEnter the Number to find:\n");
         scanf("%s", &search);
         binarySearch(arr,first, last, middle, search);
-
-        printf("\nDone :D ");
     }
 }
