@@ -1,9 +1,10 @@
 .data
 msc: .asciiz "Enter the number of the sort that you want to use \nPress 1 for Merge Sort\nPress 2 for Selection Sort\nPress 3 for Bubble Sort\n"
-prompt: .asciiz  "\nEnter up to 1000 characters: "  # Prompt asking for user input
+prompt: .asciiz  "\nEnter your characters/integers: "  # Prompt asking for user input
 newLine: .asciiz "\n"                               # Newline character
-theString: .asciiz " "                               # A fifty character string initially filled with whitespace
+theString: .asciiz " "                              # A fifty character string initially filled with whitespace
 
+msc2: .asciiz "enter the number of characters/integers"
 
 .text
 main:
@@ -18,11 +19,20 @@ main:
     
     addi $t0, $v0, 0		# number of elements=$t0 
 
-    beq $t0,3,Bubble 
+    beq $t0,3,Bubble              #IF ($t0==3) call Bubble fun
     
     j exit
     
 Bubble:
+    
+    
+    la $a0, msc2    # Load address of prompt from memory into $a0
+    li $v0, 4         # Load Opcode: 4 (print string) 
+    syscall           # Init syscall
+     
+    li $v0, 5			# read the array number from the user
+    syscall
+    addi $t7, $v0, 0		# number of elements=$t0 
 
     la $a0, prompt    # Load address of prompt from memory into $a0
     li $v0, 4         # Load Opcode: 4 (print string) 
@@ -31,11 +41,12 @@ Bubble:
     
 
     la $a0,theString  # Load address of theString into syscall argument a0
-    li $a1,1001         # Load sizeOfInput+1 into syscall argument a1
+    addi $a3,$t7,1      
+    move $a1,$a3        # Load sizeOfInput+1 into syscall argument a1
     li $v0,8          # Load Opcode: 8 (Read String)
     syscall
 
-    li $s7,1000         # s7 upper index ,Define total num of chars
+    move $s7,$t7         # s7 upper index ,Define total num of chars
     
     jal sort
     jal print
@@ -54,7 +65,7 @@ sort:
         beq $t0,$s7,done  #Check for sentinal val and if true branch to done
 
 
-        sub $t7,$s7,$t0   # Initialize upper bound of inner loop ( 1000 - i - 1 ) 
+        sub $t7,$s7,$t0   # Initialize upper bound of inner loop ( size - i - 1 ) 
         addi $t7,$t7,-1
 
 
