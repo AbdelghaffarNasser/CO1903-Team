@@ -5,22 +5,21 @@ newLine: .asciiz "\n"                               # Newline character
 theString: .asciiz " "                              # A fifty character string initially filled with whitespace
 msc2: .asciiz "\n enter the number of characters/integers \n"
 choice:		.asciiz "\nPlease select your choice: \n 1-Sort Integers\t2-Sort Characters\n"
-size:		.asciiz "\nInsert the size of the array \n"
+size:		.asciiz "\nInsert the size of the array: "
 buffer:	.byte 100			#Reserve 100 byte in the meomery for 100 charachters
 elementsI:	.asciiz "Insert the array elements,one per line  \n"
 elementsC:	.asciiz "\nInsert the array elements: "
 sorted:	.asciiz "After the array is sorted:   "
 c:		.asciiz ", "
-d:		.byte '.'
-n:		.byte '\n'
 input_size: .asciiz "\nPlease insert the size of your elements : "
 input_numbers: .asciiz "\nEnter the array elements : \n"
 arr: .word 0 #array declaration
-
 Sorted_Array:	.asciiz		"Sorted Array: ["
 Space:		.asciiz		", "
 Bracket:	.asciiz		"]"
 h: 	.word 0:100 #int h[100] is global
+d:		.byte '.'
+n:		.byte '\n'
 .text
 main:
 
@@ -579,4 +578,3 @@ Print_Loop:
 	
 Exit:
 	jr $ra			# jump to the address in $ra; Go back to main
-
