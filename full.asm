@@ -1,9 +1,9 @@
 .data
 msc: .asciiz "Enter the number of the sort that you want to use \nPress 1 for Merge Sort\nPress 2 for Selection Sort\nPress 3 for Bubble Sort\n"
-prompt: .asciiz  "\nEnter your characters/integers: "  # Prompt asking for user input
+prompt: .asciiz  "\nEnter your characters/integers: \n"  # Prompt asking for user input
 newLine: .asciiz "\n"                               # Newline character
 theString: .asciiz " "                              # A fifty character string initially filled with whitespace
-msc2: .asciiz "enter the number of characters/integers"
+msc2: .asciiz "\n enter the number of characters/integers \n"
 choice:		.asciiz "\nPlease select your choice: \n 1-Sort Integers\t2-Sort Characters\n"
 size:		.asciiz "\nInsert the size of the array \n"
 buffer:	.byte 100			#Reserve 100 byte in the meomery for 100 charachters
