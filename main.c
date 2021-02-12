@@ -77,19 +77,59 @@ void mergeSort(char arr[], int left, int right)
      }
  }
 
-//selectionSortAlgorithm
-void SelectionSort_c2(char arr[], int SIZE){
-    int i,j;
-    char MIN;
-    for(i = 0; i <= SIZE - 1; i++){
+//SelectionSortAlgorithm
+void swap_n(int *x, int *y){
+    int temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void swap_c(char *x, char *y){
+    char temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void MIN_n(int i, int arr[], int SIZE){
+    int MIN;
+    for(int j = i +1; j < SIZE; j++){
         MIN = i;
-        for(j = i +1; j <= SIZE; j++)
-            if(arr[j] < arr[MIN])
-                MIN = j;
-         char temp = arr[MIN];
-         arr[MIN] = arr[i];
-         arr[i] = temp;
+        if(arr[j] < arr[MIN]){
+            MIN = j;
+            swap_n(&arr[MIN], &arr[i]);
+        }
     }
+}
+
+void MIN_c(int i, char arr[], int SIZE){
+    int MIN;
+    for(int j = i +1; j < SIZE; j++){
+            MIN = i;
+            if(arr[j] < arr[MIN]){
+                MIN = j;
+                swap_c(&arr[MIN], &arr[i]);
+        }
+    }
+}
+void SelectionSort_n(int arr[], int SIZE){
+    for(int i = 0; i < SIZE - 1; i++){
+        MIN_n(i,arr,SIZE);
+    }
+}
+void SelectionSort_c(char arr[], int SIZE){
+    for(int i = 0; i < SIZE - 1; i++){
+            MIN_c(i,arr,SIZE);
+    }
+}
+void PrintArray_n(int arr[], int SIZE){
+    int i;
+    for(i = 0; i < SIZE; i++)
+        printf("%d  ", arr[i]);
+}
+void PrintArray_c(char arr[], int SIZE){
+    int i;
+    for(i = 0; i < SIZE; i++)
+        printf("%c  ", arr[i]);
 }
 
 //bubbleSortAlgorithm
@@ -108,7 +148,7 @@ void bubblesort (char *arr,int x){
 }
 
 //binarySearchAlgorithm
-char binarySearch(char arr[], int first, int last, int middle, char search)
+void binarySearch(char arr[], int first, int last, int middle, char search)
 {
     while (first <= last)
       {
@@ -120,7 +160,7 @@ char binarySearch(char arr[], int first, int last, int middle, char search)
 
           else if (arr[middle] == search)
           {
-             printf("%c is present at index %d.\n", search, middle-1);
+             printf("%c is present at index %d.\n", search, middle);
              break;
           }
           else
@@ -132,9 +172,34 @@ char binarySearch(char arr[], int first, int last, int middle, char search)
         {
                 printf("Not found %c is not present in the list.\n", search);
         }
+}
+void binarySearchi(int arr[], int first, int last, int middle, int search)
+{
+    while (first <= last)
+      {
 
+          if (arr[middle] < search)
+          {
+              first = middle + 1;
+          }
+
+          else if (arr[middle] == search)
+          {
+             printf("%d is present at index %d.\n", search, middle);
+             break;
+          }
+          else
+             last = middle - 1;
+
+          middle = (first + last)/2;
+       }
+       if (first > last)
+        {
+                printf("Not found %c is not present in the list.\n", search);
+        }
       return 0;
 }
+
 
 int main()
 {
@@ -167,66 +232,70 @@ int main()
         }
 
         int first = 0;
-        int last = size;
+        int last = size - 1;
         int middle = (first+last)/2;
         char search;
         printf("\nEnter the Number to find:\n");
         scanf("%s", &search);
         binarySearch(arr,first, last, middle, search);
-
         printf("\nDone :D ");
 
     }else if(num == 2){
-        printf("Please insert the size of your elements then insert the elements: \n");
-        char arr[5000] = {0};
-        int size;
-        scanf("%d", &size);
-        printf("Hey there, Enter your elements: \n");
-        for(int i = 0; i <= size; i++){
-            scanf("%c", &arr[i]);
-        }
-        /*printf("Original array: ");
-        for(int j = 0; j <= size; j++){
-            printf("%c", arr[j+1]);
-        }*/
-        printf("\nSorted array: ");
+        int c,s;
+        printf("Please insert your choice:\n\n");
+        printf("1-Sort integers\t 2-Sort characters\n");
+        scanf("%d",&c);
+        printf("Please insert the size of your array: ");
+        scanf("%d",&s);
+        if(c==1){
+            int arri[s];
+            printf("\nInsert your elements one per line:\n");
+            for(int i = 0; i < s; i++)
+                scanf("%d",&arri[i]);
+            SelectionSort_n(arri, s);
+            printf("\n\nAfter the array of integers is sorted\n\n");
+            PrintArray_n(arri, s);
+            int first = 0;
+            int last = s;
+            int middle = (first+last)/2;
+            int search;
+            printf("\n\nEnter the Number to find: ");
+            scanf("%d", &search);
+            binarySearchi(arri,first, last, middle, search);
+            printf("\nDone :D ");
+            }
+        else{
+            char arrc[s];
+            printf("\nInsert your elements one per line:\n");
+            for(int i = 0; i < s; i++)
+                scanf("%s",&arrc[i]);
+            SelectionSort_c(arrc, s);
+            printf("\n\nAfter the array of characters is sorted:\n\n");
+            PrintArray_c(arrc, s);
+            int first = 0;
+            int last = s - 1;
+            int middle = (first+last)/2;
+            char search;
+            printf("\n\nEnter the Character to find: ");
+            scanf("%s", &search);
+            binarySearch(arrc,first, last, middle, search);
+            printf("\nDone :D ");
+            }
 
-        SelectionSort_c2(arr, size);
-
-        for(int k = 0; k <= size; k++){
-            printf("%c", arr[k+1]);
-        }
-
-        int first = 0;
-        int last = size;
-        int middle = (first+last)/2;
-        char search;
-        printf("\nEnter the Number to find:\n");
-        scanf("%s", &search);
-        binarySearch(arr,first, last, middle, search);
-
-        printf("\nDone :D ");
     }else if(num == 3){
         printf("Please insert the size of your elements then insert the elements: \n");
-        char arr[5000] = {0};
         int size;
         scanf("%d", &size);
+        char arr[size];
         printf("Hey there, Enter your elements: \n");
-        for(int i = 0; i <= size; i++){
-            scanf("%c", &arr[i]);
+        for(int i = 0; i < size; i++){
+            scanf("%s", &arr[i]);
         }
-        /*printf("Original array: ");
-        for(int j = 0; j <= size; j++){
-            printf("%c", arr[j+1]);
-        }*/
         printf("\nSorted array: ");
-
         bubblesort(arr, size);
-
-        for(int k = 0; k <= size; k++){
-            printf("%c", arr[k+1]);
+        for(int k = 0; k < size; k++){
+            printf("%c", arr[k]);
         }
-
         int first = 0;
         int last = size;
         int middle = (first+last)/2;
@@ -234,7 +303,6 @@ int main()
         printf("\nEnter the Number to find:\n");
         scanf("%s", &search);
         binarySearch(arr,first, last, middle, search);
-
         printf("\nDone :D ");
     }
 }
