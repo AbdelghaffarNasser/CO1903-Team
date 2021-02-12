@@ -107,7 +107,7 @@ sort:
             sgt $t2, $s1,$s2 #  If ascii(Array[i]) > ascii(Array[i+1]) then swap and store
 
             beq $t2, $zero, inc  #  Else,  don't swap and store
-            sb  $s2,0($t6)
+            sb  $s2,0($t6)       # swap both elements
             sb  $s1,1($t6)
 
             inc:
