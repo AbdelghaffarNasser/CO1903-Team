@@ -132,15 +132,18 @@ void PrintArray_c(char arr[], int SIZE){
         printf("%c  ", arr[i]);
 }
 
+void PrintArray(char arr[], int SIZE){
+    int i;
+    for(i = 0; i < SIZE; i++)
+        printf("%c  ", arr[i+1]);
+}
 //bubbleSortAlgorithm
 void bubblesort (char *arr,int x){
     int i, j;
     for (i = 0; i <= x-1; i++){
         for (j = 0; j <= x-i-1; j++){
             if (arr[j] > arr[j+1]){
-                char temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
+                swap_c(arr+j,arr+j+1);
             }
         }
     }
@@ -160,7 +163,7 @@ void binarySearch(char arr[], int first, int last, int middle, char search)
 
           else if (arr[middle] == search)
           {
-             printf("%c is present at index %d.\n", search, middle);
+             printf("%c is present at index %d.\n", search, middle-1);
              break;
           }
           else
@@ -185,7 +188,7 @@ void binarySearchi(int arr[], int first, int last, int middle, int search)
 
           else if (arr[middle] == search)
           {
-             printf("%d is present at index %d.\n", search, middle);
+             printf("%d is present at index %d.\n", search, middle-1);
              break;
           }
           else
@@ -195,7 +198,7 @@ void binarySearchi(int arr[], int first, int last, int middle, int search)
        }
        if (first > last)
         {
-                printf("Not found %c is not present in the list.\n", search);
+                printf("Not found %d is not present in the list.\n", search);
         }
       return 0;
 }
@@ -299,9 +302,8 @@ int main()
 
         bubblesort(arr, size);
 
-        for(int k = 0; k < size; k++){
-            printf("%c", arr[k+1]);
-        }
+        PrintArray(arr,size);
+
 
         int first = 0;
         int last = size;
