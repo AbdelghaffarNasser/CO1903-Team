@@ -163,7 +163,7 @@ void binarySearch(char arr[], int first, int last, int middle, char search)
 
           else if (arr[middle] == search)
           {
-             printf("%c is present at index %d.\n", search, middle-1);
+             printf("%c is present at index %d.\n", search, middle);
              break;
           }
           else
@@ -188,7 +188,7 @@ void binarySearchi(int arr[], int first, int last, int middle, int search)
 
           else if (arr[middle] == search)
           {
-             printf("%d is present at index %d.\n", search, middle-1);
+             printf("%d is present at index %d.\n", search, middle);
              break;
           }
           else
